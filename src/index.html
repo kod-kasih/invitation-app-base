@@ -117,38 +117,9 @@
                         <h2>RSVP</h2>
                         <div class="rsvp-form-container">
                             <form id="rsvp-form" class="rsvp-form">
-                                <div class="form-group">
-                                    <label for="guest-name">Full Name *</label>
-                                    <input type="text" id="guest-name" name="guestName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="guest-email">Email *</label>
-                                    <input type="email" id="guest-email" name="guestEmail" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="guest-phone">Phone Number</label>
-                                    <input type="tel" id="guest-phone" name="guestPhone">
-                                </div>
-                                <div class="form-group">
-                                    <label for="attendance">Will you be attending? *</label>
-                                    <select id="attendance" name="attendance" required>
-                                        <option value="">Please select</option>
-                                        <option value="yes">Yes, I'll be there!</option>
-                                        <option value="no">Sorry, can't make it</option>
-                                        <option value="maybe">Maybe</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="guest-count">Number of Guests</label>
-                                    <input type="number" id="guest-count" name="guestCount" min="1" max="10" value="1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="dietary-requirements">Dietary Requirements</label>
-                                    <textarea id="dietary-requirements" name="dietaryRequirements" rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="comments">Additional Comments</label>
-                                    <textarea id="comments" name="comments" rows="4"></textarea>
+                                <!-- Form fields will be populated by template engine -->
+                                <div class="form-fields">
+                                    <!-- Dynamic fields will be inserted here -->
                                 </div>
                                 <button type="submit" class="submit-button">Send RSVP</button>
                             </form>
@@ -169,6 +140,9 @@
                         <div class="contact-grid">
                             <div class="contact-info">
                                 <h3>Get in Touch</h3>
+                                <div class="contact-methods">
+                                    <!-- Contact methods will be populated by template engine -->
+                                </div>
                                 <div class="contact-item">
                                     <strong>Organizer:</strong>
                                     <span id="organizer-name">Event Organizer</span>
@@ -225,17 +199,33 @@
     </div>
 
     <!-- Scripts -->
-    <script src="scripts/core/app.js"></script>
-    <script src="scripts/core/router.js"></script>
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    
+    <!-- Core Scripts -->
     <script src="scripts/core/eventBus.js"></script>
+    <script src="scripts/core/router.js"></script>
+    
+    <!-- Services -->
+    <script src="scripts/services/yamlConfigService.js"></script>
+    <script src="scripts/services/templateEngine.js"></script>
+    <script src="scripts/services/emailService.js"></script>
+    <script src="scripts/services/storageService.js"></script>
+    
+    <!-- Utilities -->
+    <script src="scripts/utils/helpers.js"></script>
+    
+    <!-- Components -->
     <script src="scripts/components/navigation.js"></script>
     <script src="scripts/components/hero.js"></script>
     <script src="scripts/components/gallery.js"></script>
     <script src="scripts/components/rsvp.js"></script>
     <script src="scripts/components/contact.js"></script>
-    <script src="scripts/services/emailService.js"></script>
-    <script src="scripts/services/storageService.js"></script>
-    <script src="scripts/utils/helpers.js"></script>
+    
+    <!-- Configuration -->
     <script src="config/app-config.js"></script>
+    
+    <!-- Main Application -->
+    <script src="scripts/core/app.js"></script>
 </body>
 </html>
