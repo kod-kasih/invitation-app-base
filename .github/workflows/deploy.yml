@@ -20,13 +20,11 @@ jobs:
         enablement: true
       
     - name: Upload artifact
-      needs: setup-pages
       uses: actions/upload-pages-artifact@v3
       with:
         path: './src'
         
     - name: Deploy to GitHub Pages
-      needs: upload-artifact
       id: deployment
       uses: actions/deploy-pages@v4
 
