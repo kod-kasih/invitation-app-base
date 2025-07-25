@@ -53,19 +53,114 @@ class InvitationApp {
 
     async loadConfig() {
         try {
-            // Try to load app config
-            if (window.AppConfig) {
-                this.config = window.AppConfig;
-                return;
+            // Initialize YAML config service
+            const yamlService = new YamlConfigService();
+            
+            // Try to load YAML configuration first
+            let yamlConfig = null;
+            try {
+                yamlConfig = await yamlService.loadConfig('config.yaml');
+                console.log('✅ YAML configuration loaded successfully');
+            } catch (yamlError) {
+                console.warn('⚠️ YAML configuration not available:', yamlError.message);
+                console.info('ℹ️  Using fallback configuration. Users should update config.yaml for custom content.');
             }
             
-            // Fallback to default config
-            this.config = this.getDefaultConfig();
+            // Get JavaScript configuration (for technical settings)
+            const jsConfig = window.AppConfig || this.getDefaultConfig();
+            
+            // Merge configurations (YAML content takes precedence, JS features/settings remain)
+            if (yamlConfig) {
+                // Preserve JS-only features but allow YAML to override content
+                this.config = yamlService.mergeWithJsConfig(jsConfig);
+                console.log('✅ Configuration merged: YAML content + JavaScript features');
+            } else {
+                this.config = jsConfig;
+                console.log('✅ Using default configuration with helpful placeholders');
+            }
+            
+            // Store yaml service for later use
+            this.yamlService = yamlService;
+            
+            // Validate essential config exists
+            this.validateConfig();
             
         } catch (error) {
-            console.warn('Config not found, using default config');
+            console.error('❌ Configuration loading failed:', error);
             this.config = this.getDefaultConfig();
+            this.showConfigurationHelp();
         }
+    }
+
+    /**
+     * Validate essential configuration and provide helpful guidance
+     */
+    validateConfig() {
+        const requiredFields = [
+            'event.title',
+            'event.date',
+            'event.location'
+        ];
+
+        const missingFields = [];
+        requiredFields.forEach(field => {
+            const value = this.getConfigValue(field);
+            if (!value || value.includes('TBD') || value.includes('Please Update')) {
+                missingFields.push(field);
+            }
+        });
+
+        if (missingFields.length > 0) {
+            console.info('ℹ️  Configuration guidance: Please update these fields in config.yaml:');
+            missingFields.forEach(field => console.info(`   - ${field}`));
+            this.showConfigurationHelp();
+        }
+    }
+
+    /**
+     * Get configuration value by path
+     */
+    getConfigValue(path) {
+        const keys = path.split('.');
+        let current = this.config;
+        for (const key of keys) {
+            current = current?.[key];
+            if (current === undefined) return null;
+        }
+        return current;
+    }
+
+    /**
+     * Show helpful configuration guidance to users
+     */
+    showConfigurationHelp() {
+        // Add a subtle help banner that won't alarm users
+        const helpBanner = document.createElement('div');
+        helpBanner.id = 'config-help-banner';
+        helpBanner.style.cssText = `
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 12px 16px;
+            margin: 0;
+            font-size: 14px;
+            color: #495057;
+            position: relative;
+            z-index: 1000;
+        `;
+        helpBanner.innerHTML = `
+            <strong>💡 Customize this invitation:</strong> 
+            Update the details in <code>src/config.yaml</code> to personalize your event. 
+            <a href="YAML-CONFIG-GUIDE.md" target="_blank" style="color: #007bff;">View guide →</a>
+        `;
+        
+        document.body.insertBefore(helpBanner, document.body.firstChild);
+        
+        // Auto-hide after 10 seconds
+        setTimeout(() => {
+            if (helpBanner.parentNode) {
+                helpBanner.remove();
+            }
+        }, 10000);
     }
 
     getDefaultConfig() {
@@ -76,62 +171,43 @@ class InvitationApp {
                 theme: 'default'
             },
             event: {
-                title: 'Welcome to Our Special Event',
-                subtitle: 'Join us for an unforgettable experience',
-                date: 'Date TBD',
-                location: 'Venue to be confirmed',
+                title: 'Event Title - Please Update Config',
+                subtitle: 'Please update your event details in config.yaml',
+                date: 'Date TBD - Please Update Config',
+                location: 'Location TBD - Please Update Config',
+                dresscode: 'Dress code TBD',
+                dining: 'Dining details TBD',
+                heroImage: 'placeholder-hero.svg',
                 organizer: {
-                    name: 'Event Organizer',
-                    email: 'contact@event.com',
-                    phone: '+1 (555) 123-4567'
+                    name: 'Organizer Name TBD',
+                    email: 'email@example.com',
+                    phone: '+1 (555) 000-0000'
                 }
             },
+            // These features are controlled by developers only
             features: {
                 gallery: true,
                 rsvp: true,
                 contact: true,
-                schedule: true
+                schedule: true,
+                socialSharing: false,
+                downloadCalendar: false
             },
             email: {
                 serviceUrl: 'https://formspree.io/f/your-form-id',
                 provider: 'formspree'
             },
             gallery: {
-                images: [
-                    {
-                        src: 'assets/images/gallery/1.jpg',
-                        caption: 'Sample Image 1',
-                        alt: 'Gallery Image 1'
-                    }
-                ]
+                images: []
             },
-            schedule: [
-                {
-                    time: '10:00 AM',
-                    title: 'Welcome & Registration',
-                    description: 'Check-in and welcome reception'
-                },
-                {
-                    time: '11:00 AM',
-                    title: 'Main Event',
-                    description: 'The main celebration begins'
-                },
-                {
-                    time: '1:00 PM',
-                    title: 'Lunch',
-                    description: 'Enjoy a delicious meal together'
-                },
-                {
-                    time: '3:00 PM',
-                    title: 'Activities',
-                    description: 'Fun activities and entertainment'
-                },
-                {
-                    time: '6:00 PM',
-                    title: 'Closing',
-                    description: 'Thank you and farewell'
-                }
-            ]
+            schedule: [],
+            rsvp: {
+                enabled: true,
+                fields: []
+            },
+            contact: {
+                methods: []
+            }
         };
     }
 
@@ -155,6 +231,10 @@ class InvitationApp {
                 console.warn(`Failed to initialize ${componentName}:`, error);
             }
         }
+
+        // Initialize template engine
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.init(this.config);
 
         // Update content from configuration
         this.updateContentFromConfig();
@@ -299,16 +379,9 @@ class InvitationApp {
     updateContentFromConfig() {
         if (!this.config) return;
 
-        // Update event details
-        this.updateContent('detail-datetime', this.config.event.date);
-        this.updateContent('detail-location', this.config.event.location);
-        this.updateContent('detail-dresscode', this.config.event.dresscode);
-        this.updateContent('detail-dining', this.config.event.dining);
-
-        // Update schedule if enabled
-        if (this.config.features.schedule && this.config.schedule) {
-            this.updateSchedule();
-        }
+        // The template engine handles all placeholder population
+        // This method is kept for any additional custom logic
+        console.log('✅ Content updated from configuration');
     }
 
     updateSchedule() {
