@@ -1,0 +1,41 @@
+{
+  "name": "invitation-app-base",
+  "version": "1.0.0",
+  "description": "A dynamic microfrontends-inspired static website for event invitations",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "npx serve src -l 3000",
+    "dev": "npx live-server src --port=3000 --open=/",
+    "build": "echo 'No build step required for static site'",
+    "lint": "echo 'No linting configured - consider adding ESLint for JavaScript files'",
+    "test": "echo 'No tests configured - consider adding tests for components'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kod-kasih/invitation-app-base.git"
+  },
+  "keywords": [
+    "invitation",
+    "event",
+    "wedding",
+    "static-site",
+    "microfrontends",
+    "rsvp",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "Event Organizer",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/kod-kasih/invitation-app-base/issues"
+  },
+  "homepage": "https://github.com/kod-kasih/invitation-app-base#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
