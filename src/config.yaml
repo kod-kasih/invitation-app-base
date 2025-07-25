@@ -1,0 +1,169 @@
+# Event Configuration
+# This file allows non-technical users to easily customize the event details
+# Simply edit the values below and the website will automatically update
+
+# ========================================
+# EVENT BASIC INFORMATION
+# ========================================
+event:
+  title: "Welcome to Our Special Event"
+  subtitle: "Join us for an unforgettable experience"
+  date: "December 25, 2025 at 6:00 PM"
+  location: "Grand Ballroom, Elegant Hotel, 123 Event Street, City, State 12345"
+  dresscode: "Smart casual"
+  dining: "Dinner and refreshments will be served"
+  
+  # Hero image (relative to src/assets/images/)
+  heroImage: "placeholder-hero.svg"
+
+# ========================================
+# ORGANIZER CONTACT INFORMATION
+# ========================================
+organizer:
+  name: "Event Organizer"
+  email: "organizer@yourevent.com"
+  phone: "+1 (555) 123-4567"
+
+# ========================================
+# EVENT SCHEDULE
+# ========================================
+schedule:
+  - time: "5:30 PM"
+    title: "Registration & Welcome Drinks"
+    description: "Check-in and mingle with other guests"
+  
+  - time: "6:00 PM"
+    title: "Opening Ceremony"
+    description: "Welcome address and event overview"
+  
+  - time: "6:30 PM"
+    title: "Main Program"
+    description: "Special presentations and activities"
+  
+  - time: "8:00 PM"
+    title: "Dinner & Networking"
+    description: "Enjoy dinner while connecting with fellow attendees"
+  
+  - time: "9:30 PM"
+    title: "Closing Remarks"
+    description: "Thank you and farewell"
+
+# ========================================
+# GALLERY IMAGES
+# ========================================
+gallery:
+  images:
+    - src: "placeholder-hero.svg"
+      alt: "Event venue overview"
+      caption: "Beautiful venue for our special event"
+    
+    - src: "placeholder-hero.svg"
+      alt: "Previous event highlights"
+      caption: "Memories from our last gathering"
+    
+    - src: "placeholder-hero.svg"
+      alt: "Event preparation"
+      caption: "Getting ready for the big day"
+
+# ========================================
+# RSVP SETTINGS
+# ========================================
+rsvp:
+  enabled: true
+  deadline: "December 20, 2025"
+  maxGuests: 2
+  requiresApproval: false
+  
+  # Form fields to collect
+  fields:
+    - name: "fullName"
+      label: "Full Name"
+      type: "text"
+      required: true
+    
+    - name: "email"
+      label: "Email Address"
+      type: "email"
+      required: true
+    
+    - name: "phone"
+      label: "Phone Number"
+      type: "tel"
+      required: false
+    
+    - name: "guestCount"
+      label: "Number of Guests"
+      type: "number"
+      required: true
+      min: 1
+      max: 2
+    
+    - name: "dietaryRestrictions"
+      label: "Dietary Restrictions"
+      type: "textarea"
+      required: false
+      placeholder: "Please let us know about any dietary restrictions or allergies"
+    
+    - name: "specialRequests"
+      label: "Special Requests"
+      type: "textarea"
+      required: false
+      placeholder: "Any special requests or messages for the organizers"
+
+# ========================================
+# CONTACT INFORMATION
+# ========================================
+contact:
+  showMap: true
+  address: "123 Event Street, City, State 12345"
+  
+  # Map coordinates (optional - for embedding maps)
+  coordinates:
+    lat: 40.7128
+    lng: -74.0060
+  
+  # Additional contact methods
+  methods:
+    - type: "email"
+      label: "Email Us"
+      value: "organizer@yourevent.com"
+      icon: "📧"
+    
+    - type: "phone"
+      label: "Call Us"
+      value: "+1 (555) 123-4567"
+      icon: "📞"
+    
+    - type: "address"
+      label: "Visit Us"
+      value: "123 Event Street, City, State 12345"
+      icon: "📍"
+
+# ========================================
+# CUSTOMIZATION OPTIONS
+# ========================================
+customization:
+  # Website theme (affects colors and styling)
+  theme: "default"  # Options: default, elegant, wedding, corporate, party
+  
+  # Navigation menu items (set to false to hide sections)
+  navigation:
+    home: true
+    details: true
+    gallery: true
+    rsvp: true
+    contact: true
+
+# ========================================
+# SOCIAL SHARING
+# ========================================
+social:
+  shareText: "Join us for our special event!"
+  hashtags: ["SpecialEvent", "Invitation"]
+  
+  # Social media links (optional)
+  links:
+    facebook: ""
+    twitter: ""
+    instagram: ""
+    linkedin: ""

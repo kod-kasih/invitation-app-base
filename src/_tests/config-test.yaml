@@ -1,0 +1,6 @@
+# Test configuration with missing values
+event:
+  title: "My Amazing Event"
+  # Intentionally missing some fields to test fallbacks
+
+# Missing sections to test defaults
